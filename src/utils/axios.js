@@ -2,11 +2,17 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import QS from 'qs'
 
 // 创建axios实例
 let service =  axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
-  timeout: 5000 // 请求超时时间
+  baseURL: 'http://127.0.0.1:7777/jqr/', // api的base_url
+  timeout: 5000 ,// 请求超时时间
+    transfromRequest: [function (data) {
+        return
+    }
+        
+    ]
 })
 // request拦截器
 service.interceptors.request.use(config => {

@@ -16,7 +16,10 @@
 						<el-input @keyup.enter.native ="submitForm('loginForm')" class="area" type="password" placeholder="密码" v-model="loginForm.password"></el-input>
 					</el-form-item>
 					<el-form-item>
-				    	<el-button type="primary"  @click="submitForm('loginForm')" class="submit_btn">SIGN IN</el-button>
+				    	<el-button type="primary"  @click="login('loginForm')" class="submit_btn">登录</el-button>
+				  	</el-form-item>
+					<el-form-item>
+				    	<el-button type="primary"  @click="regist()" class="submit_btn">注册</el-button>
 				  	</el-form-item>
 					<div class="tiparea">
 						<p class="wxtip">温馨提示：</p>
@@ -78,18 +81,22 @@
                     message: message
                 });
             },
-		    submitForm(loginForm) {
+		    login(loginForm) {
 				this.$refs[loginForm].validate((valid) => {
 					if (valid) {
 						let userinfo = this.loginForm;
 						login(userinfo).then(res => {
 							let userList = res.data.userList;
-							setToken("Token",userList.token)
-							this.$router.push({ path: '/' })
+							setToken("Token",userList.token);
+							this.$router.push({ path: '/' });
 							this.$store.dispatch('initLeftMenu'); //设置左边菜单始终为展开状态
 						})
 					}
 				});
+			},
+            regist(){
+                this.$router.push({ path: '/regist' })
+				console.log("---")
 			}
 		}
 	}
