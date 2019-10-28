@@ -52,7 +52,7 @@
     import logoImg from "@/assets/img/logo.png";
     import {login} from "@/api/user";
     import {setToken} from '@/utils/auth'
-    import ws from '@/utils/ws'
+    //    import ws from '@/utils/ws'
 
     export default {
         data() {
@@ -97,7 +97,27 @@
 //						})
 //					}
 //				});
-                ws.initWebSocket();
+                this.StartWebSocket("ws://127.0.0.1:6700/event")
+            },
+
+            StartWebSocket(wsUri) {
+                var websocket = new WebSocket(wsUri);
+                websocket.onopen = function (evt) {
+                    console.log(evt);
+                };
+                websocket.onclose = function (evt) {
+                    console.log(evt);
+                };
+                websocket.onmessage = function (evt) {
+                    console.log(evt);
+                    var data = evt.data;
+                    console.log(data);
+                    var message =  data.message;
+                    console.log(message);
+                };
+                websocket.onerror = function (evt) {
+                    console.log(evt);
+                };
             },
             regist() {
                 this.$router.push({path: '/regist'})
