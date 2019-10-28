@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { getToken } from '@/utils/auth'
+import {getToken} from '@/utils/auth'
 
 // 创建axios实例
-let service =  axios.create({
+let service = axios.create({
     baseURL: 'http://127.0.0.1:7777/jqr/', // api的base_url
     timeout: 5000 // 请求超时时间
 })
@@ -40,7 +40,12 @@ service.interceptors.response.use(
             // }
             // return Promise.reject('error')
         } else { // res.code === 200,正常返回数据
-            return response.data
+            if(response.data.code==200) {
+                console.log(response.data);
+                return response.data
+            }else {
+
+            }
         }
     },
     error => {

@@ -23,7 +23,8 @@ Vue.prototype.shareConfig = shareConfig;
 
 Vue.config.productionTip = false;
 
-
+import * as socketApi from './utils/wsUtils';
+Vue.prototype.socketApi = socketApi;
 
 new Vue({
   router,

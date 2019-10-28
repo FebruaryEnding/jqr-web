@@ -82,17 +82,19 @@
                 });
             },
 		    login(loginForm) {
-				this.$refs[loginForm].validate((valid) => {
-					if (valid) {
-						let userinfo = this.loginForm;
-						login(userinfo).then(res => {
-							let userList = res.data.userList;
-							setToken("Token",userList.token);
-							this.$router.push({ path: '/' });
-							this.$store.dispatch('initLeftMenu'); //设置左边菜单始终为展开状态
-						})
-					}
-				});
+                this.socketApi.websocketOpen();
+
+//				this.$refs[loginForm].validate((valid) => {
+//					if (valid) {
+//						let userinfo = this.loginForm;
+//						login(userinfo).then(res => {
+//							let userList = res.data.userList;
+//							setToken("Token",userList.token);
+//							this.$router.push({ path: '/' });
+//							this.$store.dispatch('initLeftMenu'); //设置左边菜单始终为展开状态
+//						})
+//					}
+//				});
 			},
             regist(){
                 this.$router.push({ path: '/regist' })
