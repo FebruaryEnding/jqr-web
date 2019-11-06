@@ -4,11 +4,11 @@
             <section class="form_contianer">
                 <div class='titleArea rflex'>
                     <img class="logo" :src="logo" alt="小爱admin">
-                    <span class='title'>小爱<i>Admin</i></span>
+                    <span class='title'>天笙<i>网络</i></span>
                 </div>
                 <el-form :model="loginForm" :rules="rules" ref="loginForm" class="loginForm">
                     <el-form-item prop="username" class="login-item">
-                        <span class="loginTips"><icon-svg icon-class="iconuser"/></span>
+                        <span class="loginTips"><i class="el-icon-user"></i></span>
                         <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="text"
                                   placeholder="用户名" v-model="loginForm.username"></el-input>
                     </el-form-item>
@@ -16,16 +16,6 @@
                         <span class="loginTips"><icon-svg icon-class="iconLock"/></span>
                         <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="text"
                                   placeholder="密码" v-model="loginForm.password"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="phone" class="login-item">
-                        <span class="loginTips"><icon-svg icon-class="iconuser"/></span>
-                        <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="text"
-                                  placeholder="电话" v-model="loginForm.phone"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="qq" class="login-item">
-                        <span class="loginTips"><icon-svg icon-class="iconLock"/></span>
-                        <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="text"
-                                  placeholder="QQ" v-model="loginForm.qq"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="to_login()" class="submit_btn">返回</el-button>
@@ -45,7 +35,7 @@
     import {login} from "@/api/user";
     import {setToken} from '@/utils/auth';
     import request from '@/utils/axios';
-    import axio from 'axios';
+    import axios from '@/utils/myaxios';
 
     export default {
         data() {
@@ -83,29 +73,23 @@
                 this.$router.push({path: '/login'})
             },
             regist(loginForm) {
+                let router = this.$router;
                 //todo 注册的逻辑 需要走后台
                 this.$refs[loginForm].validate((valid) => {
                     if (valid) {
                         let userInfo = this.loginForm;
-                        console.log(userInfo.username);
-                        console.log(userInfo.password);
-                        console.log(userInfo.phone);
-                        console.log(userInfo.qq);
-                        axio.post('http://127.0.0.1:7777/jqr/regest', {
+                        axios.post('/regest', {
                             name: userInfo.username,
-                            password: userInfo.password,
-                            phone: userInfo.phone,
-                            qq: userInfo.qq
+                            password: userInfo.password
                         })
-                            .then(function (response) {
-                                console.log(response);
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                        .then(function (response) {
+                            if (response.code == 200) {
+                                router.push({path: '/login'});
+                            }
+                            console.log(response);
+                        })
                     }
                 });
-                console.log("---")
             }
         }
     }

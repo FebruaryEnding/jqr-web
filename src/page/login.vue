@@ -4,17 +4,17 @@
             <section class="form_contianer">
                 <div class='titleArea rflex'>
                     <img class="logo" :src="logo" alt="小爱admin">
-                    <span class='title'>小爱<i>Admin</i></span>
+                    <span class='title'>天笙<i>网络</i></span>
                 </div>
                 <el-form :model="loginForm" :rules="rules" ref="loginForm" class="loginForm">
                     <el-form-item prop="username" class="login-item">
-                        <span class="loginTips"><icon-svg icon-class="iconuser"/></span>
+                        <span class="loginTips"><i class="el-icon-user"></i></span>
                         <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="text"
                                   placeholder="用户名" v-model="loginForm.username"></el-input>
                     </el-form-item>
                     <el-form-item prop="password" class="login-item">
                         <span class="loginTips"><icon-svg icon-class="iconLock"/></span>
-                        <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="password"
+                         <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="password"
                                   placeholder="密码" v-model="loginForm.password"></el-input>
                     </el-form-item>
                     <el-form-item>
@@ -23,11 +23,7 @@
                     <el-form-item>
                         <el-button type="primary" @click="regist()" class="submit_btn">注册</el-button>
                     </el-form-item>
-                    <div class="tiparea">
-                        <p class="wxtip">温馨提示：</p>
-                        <p class="tip">用户名为：admin/editor<span>(可用于切换权限)</span></p>
-                        <p class="tip">密码为：123456</p>
-                    </div>
+
                     <div class="sanFangArea">
                         <p class="title">第三方账号登录</p>
                         <ul class="rflex">
@@ -53,14 +49,15 @@
     import {login} from "@/api/user";
     import {setToken} from '@/utils/auth'
     //    import ws from '@/utils/ws'
+    import axios from '@/utils/myaxios';
 
     export default {
         data() {
             return {
                 logo: logoImg,
                 loginForm: {
-                    username: 'admin',
-                    password: '123456'
+                    username: '',
+                    password: ''
                 },
                 rules: {
                     username: [
@@ -70,7 +67,8 @@
                     password: [
                         {required: true, message: '请输入密码', trigger: 'blur'}
                     ],
-                }
+                },
+                token: 'admin'
             }
         },
         mounted() {
@@ -85,40 +83,48 @@
                 });
             },
             login(loginForm) {
-//                this.socketApi.websocketOpen();
-//				this.$refs[loginForm].validate((valid) => {
-//					if (valid) {
-//						let userinfo = this.loginForm;
-//						login(userinfo).then(res => {
-//							let userList = res.data.userList;
-//							setToken("Token",userList.token);
-//							this.$router.push({ path: '/' });
-//							this.$store.dispatch('initLeftMenu'); //设置左边菜单始终为展开状态
-//						})
-//					}
-//				});
-                this.StartWebSocket("ws://127.0.0.1:6700/event")
+                let router = this.$router;
+                let store = this.$store;
+                this.$refs[loginForm].validate((valid) => {
+                    if (valid) {
+                        let userinfo = this.loginForm;
+                        let token = this.token;
+                        axios.post("/login", {
+                            password: userinfo.password,
+                            username: userinfo.username
+                        }).then(function (response) {
+                            setToken("Token", token);
+                            router.push({path: '/'});
+                            store.dispatch('initLeftMenu'); //设置左边菜单始终为展开状态
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    }
+                });
+//                this.StartWebSocket("ws://127.0.0.1:6700/event")
             },
 
-            StartWebSocket(wsUri) {
-                var websocket = new WebSocket(wsUri);
-                websocket.onopen = function (evt) {
-                    console.log(evt);
-                };
-                websocket.onclose = function (evt) {
-                    console.log(evt);
-                };
-                websocket.onmessage = function (evt) {
-                    console.log(evt);
-                    var data = evt.data;
-                    console.log(data);
-                    var message =  data.message;
-                    console.log(message);
-                };
-                websocket.onerror = function (evt) {
-                    console.log(evt);
-                };
-            },
+//            StartWebSocket(wsUri) {
+//                var websocket = new WebSocket(wsUri);
+//                websocket.onopen = function (evt) {
+//                    console.log(evt);
+//                };
+//                websocket.onclose = function (evt) {
+//                    console.log(evt);
+//                };
+//                websocket.onmessage = function (evt) {
+//                    console.log(evt);
+//                    var data = evt.data;
+//                    console.log(data);
+//                    var message =  data.message;
+//                    console.log(message);
+//                };
+//                websocket.onerror = function (evt) {
+//                    console.log(evt);
+//                };
+//            },
             regist() {
                 this.$router.push({path: '/regist'})
                 console.log("---")

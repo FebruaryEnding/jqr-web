@@ -4,8 +4,8 @@ export const topRouterMap = [
         'parentName':'infoShow',
         'data':[
             {
-                path: 'infoShow1',
-                name: 'infoShow1',
+                path: 'infoShow',
+                name: 'infoShow',
                 meta: {
                     title: '个人信息子菜单',
                     icon: 'fa-asterisk',

@@ -11,7 +11,7 @@ const zh = {
       share: 'Share',
       infoManage: 'Infos',
       infoShow: 'InfoShow',
-      infoShow1: 'InfoShow1',
+      infoShow: 'infoShow',
       infoShow2: 'InfoShow2',
       infoShow3: 'InfoShow3',
       infoShow4: 'InfoShow4',

@@ -55,7 +55,7 @@ export const constantRouterMap = [
                     icon: 'iconinfo',
                     routerType:'leftmenu',
                     titleList:[
-                        {"path":"infoShow1","title":"个人信息子菜单"},
+                        {"path":"infoShow","title":"个人信息子菜单"},
                         // {"path":"infoShow2","title":"个人信息子菜单2"},
                         // {"path":"infoShow3","title":"个人信息子菜单3"},
                         // {"path":"infoShow4","title":"个人信息子菜单4"},

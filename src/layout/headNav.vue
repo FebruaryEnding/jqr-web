@@ -66,7 +66,7 @@
                         <el-submenu index="2"  popper-class="infoItem">
                             <template slot="title">
                                 <div class='welcome'>
-                                    <span class="name">{{$t('commons.hi')}},</span>
+                                    <span class="name">您好,</span>
                                     <span class='name avatarname'> {{ $t(`commons.${name}`)}}</span>
                                 </div>
                                 <img :src="avatar" class='avatar' alt="">
@@ -158,7 +158,7 @@
             setDialogInfo(cmditem) {
                 switch (cmditem) {
                     case 'info':
-                        this.$router.push('/infoManage/infoShow/infoShow1');
+                        this.$router.push('/infoManage/infoShow/infoShow');
                         break;
                     case 'pass':
                         this.$router.push('/infoManage/infoModify/infoModify1');
