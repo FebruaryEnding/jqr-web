@@ -4,7 +4,7 @@
             <section class="form_contianer">
                 <div class='titleArea rflex'>
                     <img class="logo" :src="logo" alt="小爱admin">
-                    <span class='title'>天笙<i>网络</i></span>
+                    <span class='title'>注册</span>
                 </div>
                 <el-form :model="loginForm" :rules="rules" ref="loginForm" class="loginForm">
                     <el-form-item prop="username" class="login-item">
@@ -70,7 +70,7 @@
                 });
             },
             to_login() {
-                this.$router.push({path: '/login'})
+                this.$router.push({path: '/jqr/login'})
             },
             regist(loginForm) {
                 let router = this.$router;
@@ -78,13 +78,25 @@
                 this.$refs[loginForm].validate((valid) => {
                     if (valid) {
                         let userInfo = this.loginForm;
+                        let  notify =this.$notify
                         axios.post('/regest', {
                             name: userInfo.username,
                             password: userInfo.password
                         })
                         .then(function (response) {
-                            if (response.code == 200) {
-                                router.push({path: '/login'});
+                            if (response.data.code == 200) {
+                                if(response.data.success) {
+                                    notify({
+                                        title: '提示',
+                                        message: '注册成功'
+                                    });
+                                    router.push({path: '/jqr/login'});
+                                }
+                            }else {
+                                notify({
+                                    title: '提示',
+                                    message: response.data.msg
+                                });
                             }
                             console.log(response);
                         })

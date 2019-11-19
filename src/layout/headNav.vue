@@ -148,7 +148,7 @@
               },
               logout(){
                   this.$store.dispatch('LogOut').then(() => {
-                      this.$router.push({path:'/login'})
+                      this.$router.push({path:'/jqr/login'})
                   })
               },
              /**

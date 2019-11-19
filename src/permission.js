@@ -25,6 +25,7 @@ router.beforeEach((to, from, next) => {
      browserHeaderTitle: browserHeaderTitle
    })
   // 点击登录时，拿到了token并存入了cookie,保证页面刷新时,始终可以拿到token
+    console.log("permission")
   if (getToken('Token')) {
     if(to.path === '/login') {
       next({ path: '/' })

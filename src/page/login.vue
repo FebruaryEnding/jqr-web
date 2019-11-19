@@ -14,7 +14,7 @@
                     </el-form-item>
                     <el-form-item prop="password" class="login-item">
                         <span class="loginTips"><icon-svg icon-class="iconLock"/></span>
-                         <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="password"
+                        <el-input @keyup.enter.native="submitForm('loginForm')" class="area" type="password"
                                   placeholder="密码" v-model="loginForm.password"></el-input>
                     </el-form-item>
                     <el-form-item>
@@ -50,6 +50,7 @@
     import {setToken} from '@/utils/auth'
     //    import ws from '@/utils/ws'
     import axios from '@/utils/myaxios';
+    import message from '@/utils/message'
 
     export default {
         data() {
@@ -83,48 +84,73 @@
                 });
             },
             login(loginForm) {
+                let notify = this.$notify;
                 let router = this.$router;
                 let store = this.$store;
                 this.$refs[loginForm].validate((valid) => {
                     if (valid) {
                         let userinfo = this.loginForm;
                         let token = this.token;
-                        axios.post("/login", {
+//                        let wx = this.StartWebSocket;
+                        axios.post('/login', {
                             password: userinfo.password,
-                            username: userinfo.username
+                            userName: userinfo.username
                         }).then(function (response) {
-                            setToken("Token", token);
-                            router.push({path: '/'});
-                            store.dispatch('initLeftMenu'); //设置左边菜单始终为展开状态
                             console.log(response);
+                            if (response.data.code == 200) {
+//                                wx("ws://127.0.0.1:6700/event");
+                                setToken("Token", token);
+                                router.push({path: '/'});
+                                store.dispatch('initLeftMenu'); //设置左边菜单始终为展开状态
+                            }
+                            console.log(response);
+                        })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                });
+            },
+
+            StartWebSocket(wsUri) {
+                var websocket = new WebSocket(wsUri);
+                websocket.onopen = function (evt) {
+                    console.log(evt);
+                };
+                websocket.onclose = function (evt) {
+                    console.log(evt);
+                };
+                websocket.onmessage = function (evt) {
+                    var data = evt.data;
+                    console.log("data" + data);
+                    var dataObject = JSON.parse(data);
+                    console.log(dataObject);
+                    var message = dataObject.message;
+                    console.log("message" + message);
+                    var reg = new RegExp("(￥[^￥]+￥)");
+                    var result = message.match(reg);
+                    var result0 = result[0];
+                    console.log("resukt0" + result[0]);
+                    console.log(result[0]);
+                    if (result[0] != undefined) {
+                        axios({
+                            type: "GET",
+                            url: "http://118.25.88.251:7777/jqr/api/tkl/" + result[0]
+                        })
+                        .then(function (response) {
+                            console.log("返回信息");
+                            console.log(response.data.data);
+                            window.open(response.data.data);
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
                     }
-                });
-//                this.StartWebSocket("ws://127.0.0.1:6700/event")
+                };
+                websocket.onerror = function (evt) {
+                    console.log(evt);
+                };
             },
-
-//            StartWebSocket(wsUri) {
-//                var websocket = new WebSocket(wsUri);
-//                websocket.onopen = function (evt) {
-//                    console.log(evt);
-//                };
-//                websocket.onclose = function (evt) {
-//                    console.log(evt);
-//                };
-//                websocket.onmessage = function (evt) {
-//                    console.log(evt);
-//                    var data = evt.data;
-//                    console.log(data);
-//                    var message =  data.message;
-//                    console.log(message);
-//                };
-//                websocket.onerror = function (evt) {
-//                    console.log(evt);
-//                };
-//            },
             regist() {
                 this.$router.push({path: '/regist'})
                 console.log("---")

@@ -37,7 +37,8 @@ export const constantRouterMap = [
 	{ path: '/login',name: 'login',component:() => import('@/page/login'),hidden: true},
     { path: '/regist',name: 'regist',component:() => import('@/page/regist/regist'),hidden: true},
 	{ path: '/404', component: () => import('@/page/errorPage/404'), hidden: true },
-  { path: '/401', component: () => import('@/page/errorPage/401'), hidden: true },
+    { path: '/401', component: () => import('@/page/errorPage/401'), hidden: true },
+    { path: '/default', component: () => import('@/page/default/default'), hidden: true },
     {
         path:'/infoManage',
         name: 'infoManage',
@@ -110,7 +111,7 @@ export const constantRouterMap = [
 	//注册路由
 export default new Router({
 	mode:'history', // 默认为'hash'模式
-	base: '/', // 添加跟目录,对应服务器部署子目录
+	base: '/jqr', // 添加跟目录,对应服务器部署子目录
 	routes: constantRouterMap
 })
 
